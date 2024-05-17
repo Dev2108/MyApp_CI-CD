@@ -1,0 +1,46 @@
+# .github/workflows/wordpress-ci.yml
+name: WordPress Theme CI
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    working-directory: ./wordpress/
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install PHP
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y php7.4 php7.4-cli php7.4-mbstring php7.4-intl php7.4-gd php7.4-xml php7.4-zip php7.4-curl php7.4-mysql
+
+    - name: Set up PHP INI settings
+      run: |
+        echo "post_max_size = 256M" | sudo tee -a /etc/php/7.4/cli/php.ini
+        echo "upload_max_filesize = 256M" | sudo tee -a /etc/php/7.4/cli/php.ini
+
+    - name: Install Composer
+      run: |
+        curl -sS https://getcomposer.org/installer | php
+        sudo mv composer.phar /usr/local/bin/composer
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Run PHPCS
+      run: vendor/bin/phpcs --standard=WordPress .
+
+    - name: Deploy to staging
+      if: github.ref == 'refs/heads/main'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+        ssh -o StrictHostKeyChecking=no user@staging-server 'cd /path/to/wp-content/themes/your-theme && git pull && composer install'
+
