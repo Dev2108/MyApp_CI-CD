@@ -17,36 +17,6 @@ Containing the extended CI/CD pipelines and Dockerized applications developed in
 
 MyApp is a multi-technology application consisting of components developed in Go, Next.js (TypeScript), and WordPress.
 
-Directory Structure
-The project directory structure is as follows:
-
-MyApp/
-│
-├── go-app/
-│   ├── main.go
-│   └── Dockerfile
-│
-├── nextjs-app/
-│   ├── pages/
-│   ├── package.json
-│   ├── Dockerfile
-│   └── .eslintrc.js
-│
-├── wordpress/
-│   ├── wp-content/
-│   ├── Dockerfile
-│   
-│
-├── .github/
-│   └── workflows/
-│       ├── go.yml
-│       ├── nextjs.yml
-│       └── wordpress.yml
-│
-├── docker-compose.yml
-└── README.md
-
-
 Components
 
 Go (./go-app/)
