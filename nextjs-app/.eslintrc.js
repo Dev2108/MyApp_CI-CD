@@ -8,6 +8,6 @@ module.exports = {
   ],
   plugins: ['prettier'],
   rules: {
-    'prettier/prettier': ['error', { configFile: '/path/to/nextjs-app/.prettierrc' }],
+    'prettier/prettier': ['error', { configFile: '.prettierrc' }],
   },
 };
