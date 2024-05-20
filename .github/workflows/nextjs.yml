@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./go-app
+        working-directory: go-app
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
       run: npm run lint
 
     - name: Run Prettier check
-      run: prettier --check .
+      run: prettier --check
 
     - name: Run tests
       run: npm test
